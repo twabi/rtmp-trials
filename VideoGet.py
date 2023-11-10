@@ -1,12 +1,10 @@
 from threading import Thread
 import time
 from vidgear.gears import CamGear
-from turbojpeg import TurboJPEG, TJFLAG_PROGRESSIVE
+from turbojpeg import TurboJPEG
 
 
 jpeg = TurboJPEG()
-
-
 
 class VideoGet:
     """
@@ -17,6 +15,8 @@ class VideoGet:
     def __init__(self, src=0):
         self._start_time = time.time()
         self.frame_num = 0
+
+        # these are options for the webcam. You can change resolution and other variables from here. Check the CamGear docs for more
         self.options = {
                 "THREADED_QUEUE_MODE": True,
                 "CAP_PROP_FRAME_WIDTH": 640, # resolution 320x240
@@ -31,6 +31,7 @@ class VideoGet:
         Thread(target=self.get, args=()).start()
         return self
 
+    # get the frames here
     def get(self):
         
         while not self.stopped:

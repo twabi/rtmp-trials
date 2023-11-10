@@ -5,6 +5,9 @@ import threading
 
 
 class VideoShow:
+    '''
+    This class shows captured frames using cv2. Nothing extreme here.
+    '''
     def __init__(self, image=None):
         self.image = image
         self.stopped = False

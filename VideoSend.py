@@ -1,14 +1,13 @@
 from threading import Thread
 import cv2
-from sinetstream import MessageWriter
-from turbojpeg import TurboJPEG, TJFLAG_PROGRESSIVE
+from turbojpeg import TurboJPEG
 from vidgear.gears import WriteGear
 
 jpeg = TurboJPEG()
 
 class VideoSend:
     """
-    Class that continuously sends a frame to SINET using a dedicated thread.
+    Class that continuously sends a frame to rtmp url using a dedicated thread.
     """
 
     def __init__(self, frame=None, width=0, height=0):
@@ -25,6 +24,7 @@ class VideoSend:
 
     def send(self):
 
+        # params for the writer object
         output_params = {
             "-preset:v": "veryfast",
             "-g": 60,
@@ -34,7 +34,7 @@ class VideoSend:
             "-f": "flv",
         }
 
-        # Define writer with defined parameters and
+        # The writer object from WriteGear writes frames to a given server. here we initialize the writer
         writer = WriteGear(
             output=self.rtmp_url,
             compression_mode=True,
@@ -42,6 +42,7 @@ class VideoSend:
             **output_params
         )
 
+        # loop and keep sending frames
         while (not self.stopped) and (self.frame is not None):
             writer.write(self.frame)
             print("Sent")
